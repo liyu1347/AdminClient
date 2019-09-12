@@ -1,5 +1,6 @@
-/*入门js */
+/*入口js */
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
+import './api'
 ReactDOM.render(<App/>, document.getElementById('root'))

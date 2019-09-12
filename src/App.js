@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
-import {Button, message} from 'antd'
-import {BrowserRouter, HashRouter, Switch, Route} from "react-router-dom"
+import { message} from 'antd'
+import { HashRouter, Switch, Route} from "react-router-dom"
 
 import Login from './pages/login/login'
 import Admin from './pages/admin/admin'
@@ -16,7 +16,7 @@ export default class App extends Component {
             <HashRouter>
                 <Switch>
                     <Route path="/login" component={Login}/>
-                    <Route path="/admin" component={Admin}/>
+                    <Route path="/" component={Admin}/>
                 </Switch>
             </HashRouter>
         )
