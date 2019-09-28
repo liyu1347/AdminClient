@@ -4,16 +4,39 @@ import { Menu, Icon } from 'antd'
 import menuList from '../../config/menuConfig'
 import logo from '../../assets/images/logo.png' 
 import './index.less'
+import memoryUtils from '../../utils/memoryUtils'
 
 const { SubMenu} = Menu
 /*左侧导航组件 */
  class LeftNav extends Component {
+
+     //判断当前用户是否有此item对应的权限
+     hasAuth = (item) =>{
+         //得到当前用户的所有权限
+         const user = memoryUtils.user
+         const menus = user.role.menus
+         //1 若当前用户是admin
+         //2 如果item是公开的
+         //3 当前用户有此item的权限
+         if( user.username ==='admin' || item.public || menus.indexOf(item.key)!=-1){
+             return true
+         } else if (item.children) {
+              //如果当前用户有item的某个子节点的权限，当前item也应该显示
+             const cItem =  item.children.find(cItem => menus.indexOf(cItem.key)!=-1)
+             return !!cItem
+         }
+        
+         return false
+     }
+
      /*根据指定的menu数据数组生成<Item>和<SubMenu>的数组， reduce+函数递归 */
     getMenuNodes2 = (menuList) => { 
 
         const path = this.props.location.pathname
         return menuList.reduce( (pre, item)=>{
-            //可能向pre中添加<Menu.Item>
+            //判断当前用户是否有此item对应的权限
+          if(this.hasAuth(item)) {
+                //可能向pre中添加<Menu.Item>
             if(!item.children) {
                 pre.push(
                     <Menu.Item key={item.key}>
@@ -47,6 +70,7 @@ const { SubMenu} = Menu
             </SubMenu>
                 )
             }
+          }
             //也有可能添加<SubMenu>
             return pre
         }, [])
@@ -99,7 +123,10 @@ const { SubMenu} = Menu
 
         
         //得到当前请求的路由路径
-        const selectKey = this.props.location.pathname
+        let selectKey = this.props.location.pathname
+        if(selectKey.indexOf('/product') ===0) {
+            selectKey = '/product'
+        }
         console.log('selectKey', selectKey)
         console.log('openKey', this.openKey)
         return (

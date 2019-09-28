@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*区别call()/apply()/bind()     制定会议实现bing()*/
+        Function.prototype.bind = function(obj) {
+
+            const args = []
+            //arguments: 调用bind函数时传递的实参伪数组
+            if(arguments.length>1) {
+                
+                for(let i=1; i< arguments.length; i++) {
+                    args.push(arguments[i])
+                }
+            }
+            const self = this //fn
+            return function () { // 返回的新函数，内部执行fn，而且直接指定this为obj
+                //arguments：是调用新函数时传递的实参伪数组,需要将从第二个开始，都保存到args中
+                }
+
+                if(arguments.length>0) {
+                for(let i=0; i< arguments.length; i++) {
+                    args.push(arguments[i])
+                }
+            }
+                
+                self.call(obj, arguments)
+            }
+        
+
+        function fn(a, b) {
+            console.log(a, b, this.m)
+        }
+
+        const obj = {m:1}
+
+        fn.call(obj, 2, 3, 4) //2 3 1
+        fn.apply(obj, [2,3,4])//2 3 1
+        fn.bind(obj)(2,3)//2 3 1
+        fn.bind(obj,5,6)(2,3)//5 6 1
+        fn.bind(obj, 5,6,7)(2,3)//5 6 1
+
+    </script>
+</body>
+</html>
